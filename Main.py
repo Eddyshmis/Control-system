@@ -1,7 +1,6 @@
 import tkinter as tk
-
 import system_control as sys_c
-
+from time import sleep
 root = tk.Tk()
 root.geometry("400x200")
 master = sys_c.Main_system()
@@ -14,6 +13,8 @@ def close_listen_fun():
 
 def shut_computers_fun():
     master.gui_msg = "!Shutdown"
+    sleep(0.5)
+    master.gui_msg = ""
 
 Connection_frame = tk.Frame(root)
 Connection_frame.grid(row=0,column=0)
