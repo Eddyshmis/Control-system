@@ -13,28 +13,32 @@ class Main_system:
 
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind(self.ADDR)
-        self.server.listen()
-        
-        print(f"[LISTENING] Server is listening on {self.SERVER}")
-        print(self.SERVER)
+        self.Connections = 0
     
     def handle_client(self,conn,addr):
-        conn.setblocking(False)
+        conn.setblocking(True)
         connected = True
         while connected:
             client_msg = conn.recv(2048).decode(self.FORMAT)
             if client_msg == "!Connected":
                 try:
-                    conn.send(str("Works!")).encode(self.FORMAT)
+                    conn.send(str.encode("WORKS!",encoding=self.FORMAT))
                 except Exception as e:
-                    print(e)
+                    print("Error:",e)
 
 
 
     def start_server(self):
-        conn, addr = self.server.accept()
+        self.server.listen()
         
-        print("connected to: ", addr)
-        thread = threading.Thread(target=self.handle_client,args=(conn,addr))
-        thread.start()
-        print(f"[ACTIVE CONNECTIONS]{threading.active_count() - 1}")
+        print(f"[LISTENING] Server is listening on {self.SERVER}")
+        print(self.SERVER)
+
+        while True:
+            conn, addr = self.server.accept()
+            
+            print("connected to: ", addr)
+            self.Connections += 1
+            thread = threading.Thread(target=self.handle_client,args=(conn,addr))
+            thread.start()
+            print(f"[ACTIVE CONNECTIONS]{self.Connections}")

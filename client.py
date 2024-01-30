@@ -1,4 +1,5 @@
 import socket
+import os
 
 class Network:
     def __init__(self):
@@ -26,5 +27,11 @@ class Network:
     def connect(self):
         self.client.connect(self.addr)
         self.client.setblocking(False)
-        print("Player connected to: ",self.addr)
+        print("connected to: ",self.addr)
         self.send("!Connected")
+test = Network()
+test.connect()
+while True():
+    msg_server = test.receive_data()
+    if msg_server != None:
+        print(msg_server)
