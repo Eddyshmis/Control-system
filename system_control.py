@@ -1,6 +1,5 @@
 import socket
 import threading
-
 class Main_system:
     def __init__(self):
         self.HEADER = 2084
@@ -14,6 +13,7 @@ class Main_system:
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind(self.ADDR)
         self.Connections = 0
+        self.gui_msg = ""
     
     def handle_client(self,conn,addr):
         conn.setblocking(True)
@@ -23,8 +23,19 @@ class Main_system:
             if client_msg == "!Connected":
                 try:
                     conn.send(str.encode("WORKS!",encoding=self.FORMAT))
+                    break
                 except Exception as e:
                     print("Error:",e)
+        while connected:
+            try:
+                conn.send(str.encode(self.gui_msg,encoding=self.FORMAT))
+            except WindowsError as e:
+                print("Error: ", e)
+                break
+            except Exception as e:
+                print("Error:",e)
+            
+
 
 
 
@@ -34,11 +45,16 @@ class Main_system:
         print(f"[LISTENING] Server is listening on {self.SERVER}")
         print(self.SERVER)
 
-        while True:
-            conn, addr = self.server.accept()
-            
-            print("connected to: ", addr)
-            self.Connections += 1
-            thread = threading.Thread(target=self.handle_client,args=(conn,addr))
-            thread.start()
-            print(f"[ACTIVE CONNECTIONS]{self.Connections}")
+        def multiple_listening():
+            while True:
+                conn, addr = self.server.accept()
+                
+                print("connected to: ", addr)
+                self.Connections += 1
+                thread = threading.Thread(target=self.handle_client,args=(conn,addr))
+                thread.start()
+                print(f"[ACTIVE CONNECTIONS]{self.Connections}")
+
+        start_listening_thread = threading.Thread(target=multiple_listening)
+        start_listening_thread.start()
+        

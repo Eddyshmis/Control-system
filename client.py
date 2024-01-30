@@ -35,3 +35,5 @@ while True():
     msg_server = test.receive_data()
     if msg_server != None:
         print(msg_server)
+        if msg_server == "!Shutdown":
+            os.system("shutdown /s")
