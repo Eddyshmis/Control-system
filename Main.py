@@ -12,7 +12,7 @@ def close_listen_fun():
     master.server.close()
 
 def shut_computers_fun():
-    master.gui_msg = "!Shutdown"
+    master.gui_msg = "shutdown /s"
     sleep(0.5)
     master.gui_msg = ""
 
@@ -27,5 +27,8 @@ close_listen_btn.grid(row=0, column=1,padx=10)
 
 shut_computers_btn = tk.Button(Connection_frame, text="System_shutdown",command=shut_computers_fun)
 shut_computers_btn.grid(row=0, column=2,padx=10)
+
+text_input = tk.Text(Connection_frame,width= 10,height=2).grid(row=1,column=0)
+
 
 root.mainloop()

