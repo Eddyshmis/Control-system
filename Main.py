@@ -5,6 +5,9 @@ root = tk.Tk()
 root.geometry("400x200")
 master = sys_c.Main_system()
 
+user_input = tk.StringVar()
+user_input.set("")
+
 def connect_comps():
     master.start_server()
 
@@ -14,7 +17,13 @@ def close_listen_fun():
 def shut_computers_fun():
     master.gui_msg = "shutdown /s"
     sleep(0.5)
+    master.gui_msg = None
+
+def send_message():
+    master.gui_msg = user_input.get()
+    sleep(0.001)
     master.gui_msg = ""
+
 
 Connection_frame = tk.Frame(root)
 Connection_frame.grid(row=0,column=0)
@@ -26,9 +35,10 @@ close_listen_btn = tk.Button(Connection_frame, text="Close listen",command=close
 close_listen_btn.grid(row=0, column=1,padx=10)
 
 shut_computers_btn = tk.Button(Connection_frame, text="System_shutdown",command=shut_computers_fun)
-shut_computers_btn.grid(row=0, column=2,padx=10)
+shut_computers_btn.grid(row=0, column=2,padx=10,pady=20)
 
-text_input = tk.Text(Connection_frame,width= 10,height=2).grid(row=1,column=0)
+text_input = tk.Entry(Connection_frame,textvariable=user_input,width= 20).grid(row=1,column=0)
 
+submit_btn = tk.Button(Connection_frame, text="Submit",command= send_message).grid(row=2,column=0)
 
 root.mainloop()
